@@ -1,0 +1,22 @@
+# org.example.Application configuration
+spring:
+  application:
+    name: crud
+
+# Embedded server configuration
+server:
+  servlet:
+    context-path: /${spring.application.name}
+  port: 8080
+
+# Open API configuration
+openapi:
+  info:
+    description: Basic CRUD with swagger UI docs
+    enabled: true
+
+springdoc:
+  swagger-ui:
+    enabled: true
+  api-docs:
+    enabled: true
