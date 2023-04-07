@@ -29,6 +29,7 @@
         <module>crud-api</module>
         <module>crud-model</module>
         <module>crud-service</module>
+        <module>crud-repository</module>
     </modules>
 
     <dependencies>

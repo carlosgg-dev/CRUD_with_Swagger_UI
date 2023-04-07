@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.util.List;
+import java.util.Optional;
 
 import static org.example.common.ApiConstants.DELETE_ALL_ELEMENTS_DESCRIPTION;
 import static org.example.common.ApiConstants.DELETE_ALL_ELEMENTS_SUMMARY;
@@ -47,7 +47,7 @@ public class ElementController {
 
 	@GetMapping(ELEMENT_BASE_MAPPING)
 	@Operation(summary = GET_ELEMENTS_SUMMARY, description = GET_ELEMENT_DESCRIPTION)
-	public ElementApi obtainElement(@PathVariable final int elementId) {
+	public Optional<ElementApi> obtainElement(@PathVariable final int elementId) {
 
 		return this.elementService.obtainElementById(elementId);
 	}
@@ -61,9 +61,9 @@ public class ElementController {
 
 	@PutMapping
 	@Operation(summary = PUT_ELEMENT_SUMMARY, description = PUT_ELEMENT_DESCRIPTION)
-	public void updateElement(@RequestBody @Validated final ElementApi elementApi) {
+	public Optional<ElementApi> updateElement(@RequestBody @Validated final ElementApi elementApi) {
 
-		this.elementService.updateElement(elementApi);
+		return this.elementService.updateElement(elementApi);
 	}
 
 	@DeleteMapping

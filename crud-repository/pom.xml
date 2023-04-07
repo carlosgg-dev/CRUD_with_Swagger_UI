@@ -11,10 +11,10 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>crud-service</artifactId>
+    <artifactId>crud-repository</artifactId>
 
-    <name>CRUD - Service</name>
-    <description>Service layer</description>
+    <name>CRUD - Repository</name>
+    <description>Repository layer</description>
 
     <packaging>jar</packaging>
 
@@ -26,17 +26,14 @@
 
     <dependencies>
 
-        <!-- Internal modules -->
         <dependency>
-            <groupId>org.example</groupId>
-            <artifactId>crud-model</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>org.example</groupId>
-            <artifactId>crud-repository</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
 
     </dependencies>

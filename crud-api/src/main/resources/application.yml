@@ -2,6 +2,19 @@
 spring:
   application:
     name: crud
+  datasource:
+    url: jdbc:h2:mem:mydb
+    username: root
+    password: 123
+    driverClassName: org.h2.Driver
+  jpa:
+    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: true
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: update
+  h2:
+    console.enabled: true
 
 # Embedded server configuration
 server:
