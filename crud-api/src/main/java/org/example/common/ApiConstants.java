@@ -10,6 +10,7 @@ public class ApiConstants {
 	public static final String ELEMENTS_MAPPING = "/elements";
 	public static final String ELEMENT_ID_MAPPING = "/{elementId}";
 	public static final String ELEMENTS_BASE_MAPPING = API_BASE_MAPPING + ELEMENTS_MAPPING;
+	public static final String FILTERED_ELEMENTS_BASE_MAPPING = API_BASE_MAPPING + ELEMENTS_MAPPING + "/filtered";
 	public static final String ELEMENT_BASE_MAPPING = ELEMENTS_BASE_MAPPING + ELEMENT_ID_MAPPING;
 
 	// Summaries

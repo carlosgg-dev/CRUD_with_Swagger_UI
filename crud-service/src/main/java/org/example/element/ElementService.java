@@ -1,5 +1,6 @@
 package org.example.element;
 
+import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,62 +11,84 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ElementService {
 
-	private final ElementRepository elementRepository;
+	private final ElementRepositoryJdbc elementRepositoryJdbc;
 
 	public List<ElementApi> obtainAllElements() {
 
-		return elementRepository.findAll().stream()
+		return elementRepositoryJdbc.find().stream()
 				.map(this::convertToElementApi)
 				.toList();
 	}
 
 	public Optional<ElementApi> obtainElementById(final int id) {
 
-		return elementRepository.findById(id)
+		return elementRepositoryJdbc.findById(id)
 				.map(this::convertToElementApi);
+	}
+
+	public List<ElementApi> obtainElementsByParameters(final String name, final String type) {
+
+		return elementRepositoryJdbc.findByParameters(name, type).stream()
+			.map(this::convertToElementApi)
+			.toList();
 	}
 
 	public ElementApi createElement(final ElementApi elementApi) {
 
-		final ElementData elementData = this.convertToElementData(elementApi);
+		if (this.obtainElementById(elementApi.getId()).isPresent()) {
+			throw new IllegalArgumentException("The element already exist");
+		}
 
-		this.elementRepository.save(elementData);
+		final ElementData elementData = this.convertToElementData(elementApi);
+		this.elementRepositoryJdbc.create(elementData);
 
 		return this.convertToElementApi(elementData);
 	}
 
-	public Optional<ElementApi> updateElement(final ElementApi elementApi) {
+	public ElementApi updateElement(final ElementApi elementApi) {
+
+		checkIfElementExist(elementApi.getId());
 
 		final ElementData elementData = this.convertToElementData(elementApi);
+		this.elementRepositoryJdbc.update(elementData);
 
-		if (this.obtainElementById(elementData.id).isPresent()) {
-
-			return Optional.of(this.createElement(elementApi));
-		}
-
-		return Optional.empty();
+		return this.convertToElementApi(elementData);
 	}
 
 	public void deleteAllElements() {
 
-		this.elementRepository.deleteAll();
+		this.elementRepositoryJdbc.deleteAll();
 	}
 
-	public void deleteElement(final int id) {
+	public void deleteElement(final int elementId) {
 
-		this.elementRepository.deleteById(id);
+		checkIfElementExist(elementId);
+
+		this.elementRepositoryJdbc.delete(elementId);
+	}
+
+	private void checkIfElementExist(final int elementId) {
+
+		if (this.obtainElementById(elementId).isEmpty()) {
+			throw new NoSuchElementException("The element not exist");
+		}
 	}
 
 	private ElementData convertToElementData(final ElementApi elementApi) {
 
-		return new ElementData(elementApi.getId(), elementApi.getName());
+		return ElementData.builder()
+			.id(elementApi.getId())
+			.name(elementApi.getName())
+			.type(elementApi.getType())
+			.build();
 	}
 
 	private ElementApi convertToElementApi(final ElementData elementData) {
 
 		return ElementApi.builder()
-				.id(elementData.id)
-				.name(elementData.name)
-				.build();
+			.id(elementData.getId())
+			.name(elementData.getName())
+			.type(elementData.getType())
+			.build();
 	}
 }
